@@ -1,0 +1,46 @@
+struct node{
+  int value = 0;
+  node* rightPoint;
+  node* downPoint;
+  node* oldPoint;
+};
+
+struct skipList{
+  node* elem;
+  node* root;
+  int height = 0;
+  int level = 0;
+  node* rightRoot;
+  node* old;
+  node* rightElem;
+  node* belowRoot;
+  void insert(skipList skippy);
+};
+
+void insert(skipList skippy){
+  if (skippy.rightRoot->value < skippy.elem->value){
+    //If right isn't "overshot" (i.e. we are going to long), we go right.
+    insert(skipList skippy);
+  }
+  else if (skippy.level = 0){
+    //We're at bottom level and the right node is overshot, hence
+    //we've reached our goal, so we insert the node inbetween root
+    //and the node next to root.
+    skippy.old->oldPoint = skippy.rightRoot;
+    skippy.rightRoot = skippy.elem;
+    skippy.rightElem = skippy.old->oldPoint;
+  }
+  else if (skippy.level <= skippy.height){
+    //Our level is below the height, hence we need to insert a
+    //link before we go on.
+    skippy.old->oldPoint = skippy.rightRoot;
+    skippy.rightRoot = skippy.elem;
+    skippy.rightElem = skippy.old->oldPoint;
+
+    //Go a level down.
+    skippy.level--;
+    skippy.root = skippy.root->downPoint;
+    insert(skipList skippy);
+    }
+
+}
