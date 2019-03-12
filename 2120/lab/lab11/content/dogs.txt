@@ -1,0 +1,12 @@
+chocolate lab
+black lab
+yellow lab
+shih tzu
+pomeranian
+corgi
+foxhound
+bloodhound
+german shepherd
+husky
+beagle
+dachshund

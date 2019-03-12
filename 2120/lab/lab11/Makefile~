@@ -1,0 +1,13 @@
+CC = g++
+DEBUG = -g
+CFLAGS = -Wall -std=gnu++11 $(DEBUG)
+LFLAGS = -Wall $(DEBUG)
+
+default: lab/lab11/lab11.cpp lab/lab11/lab11.txt lab/lab11/search.h
+	lab/lab11/lab11.cpp lab/lab11/lab11.txt lab/lab11/search.h
+
+run: lab/lab11/a.out
+	java lab.lab11.a.out
+
+clean:
+	rm -f *.out

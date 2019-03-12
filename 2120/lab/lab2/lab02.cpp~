@@ -1,0 +1,71 @@
+#include <iostream>
+#include <string>
+#include "List.h"
+#include "Node.h"
+using namespace std;
+
+//Tests the functions in List.h
+int main(){
+
+  List<int> list1;
+  list1.print("list1");
+  for(int i = 1, j = 1; i <= 10; i++){
+    j = -2 * j;
+    list1.insert(j);
+    list1.print("list1");
+  }
+
+  List<string> list2;
+  string s[] = {"Sisko", "Janeway", "Picard", "Kirk", "Zoey", "Frodo"};
+  for(int i = 0; i < 6; i++) {
+    list2.insert(s[i]);
+    list2.print("list2");
+  }
+  if(!list2.contains("Worf")){
+    cout << "Worf is not in list2 :(" << endl;
+  }
+
+  List<char> list3;
+  char c[] = {'z', 'p', 'r', 'p', 'd', 'a', 'h', 'q', 'o'};
+  for(int i = 0; i < 9; i++){
+    list3.insert(c[i]);
+    list3.print("list3");
+  }
+  if(list3.contains('r')){
+    cout << "r is in list3" << endl;
+  }
+
+  List<char> list4;
+  char d[] = {'R', 'P', 'L'};
+  for(int i = 0; i < 3; i++){
+    list4.insert(d[i]);
+    list4.print("list4");
+  }
+  if(list4.contains('Z')){
+    cout << "Z is one of my initials" << endl;
+  }
+  else{
+    cout << "Z is not in my initials" << endl;
+  }
+  
+  List<string> list5;
+  string t[] = {"Reagan", "is", "the", "coolest"};
+  for(int i = 0; i < 4; i++) {
+    list5.insert(t[i]);
+    list5.print("list5");
+  }
+  if(!list5.contains("lame")){
+    cout << "Yeah. Reagan IS pretty cool..." << endl;
+  }
+
+  List<int> list6;
+  list6.print("list6");
+  for(int i = 1, j = 1; i <= 10; i++){
+    j += 4 + j;
+    list6.insert(j);
+    list6.print("list6");
+  }
+    
+  return 0;
+}
+

@@ -1,0 +1,6 @@
+blue cat
+red cat
+green cat
+striped cat
+black cat
+white cat

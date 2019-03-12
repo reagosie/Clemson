@@ -1,0 +1,12 @@
+Chicago NYC 6
+NYC DC 3
+DC Raleigh 5
+DC Norfolk 2
+Raleigh Clemson 10
+#####
+Chicago Norfolk
+Clemson Norfolk
+DC Chicago
+Clemson NYC
+Raleigh Chicago
+DC Clemson

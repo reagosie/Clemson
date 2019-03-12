@@ -1,0 +1,47 @@
+a,b,1
+a,c,3
+d,e,6
+b,d,9
+f,g,2
+f,d,2
+a,f,4
+#####
+Seatle,San Fransisco,1306
+Seatle,Denver,2161
+Seatle,Minneapolis,2661
+San Fransisco,Las Vegas,919
+San Fransisco,Los Angeles,629
+Las Vegas,Los Angeles,435
+Las Vegas,Denver,1225
+Las Vegas,Dallas,1983
+Denver,Minneapolis,1483
+Denver,Dallas,1258
+Minneapolis,Dallas,1532
+Minneapolis,Chicago,661
+Dallas,Washington DC,2113
+Dallas,Miami,2161
+Chicago,Washington DC,1145
+Chicago,Boston,1613
+Washington DC,Boston,725
+Washington DC,New York,383
+Washington DC,Miami,1709
+Boston,New York,338
+New York,Miami,2145
+#####
+Spongebob,Patrick,2
+Patrick,Squidward,10
+Spongebob,Squidward,20
+Spongebob,Sandy,5
+Patrick,Mr Krabs,8
+Spongebob,Mr Krabs,4
+Mr Krabs,Plankton,6
+Squidward,Mr Krabs,3
+#####
+dog,cat,3
+cat,lion,2
+lion,tiger,1
+tiger,gorilla,5
+gorilla,chimpanzee,2
+tiger,cat,2
+chimpanzee,hyena,6
+hyena,dog,4
