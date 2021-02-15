@@ -1,3 +1,3 @@
 CPSC 3720
-w/ Murali Sitaraman
+w/ Dr. Murali Sitaraman
 Spring 2019
