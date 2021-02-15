@@ -1,0 +1,45 @@
+//register variables
+register int l,m,n,k;
+register int i,j;
+
+
+//unrolling + blocking
+for(i=0;i<m;i+=4) {
+for(int a=0;a<8;a++) {
+  C[i+a][j] = C[i+a][j] + B[l][j]*A[i+a][l];
+  C[i+a][j+1] = C[i+a][j+1] + B[l][j+1]*A[i+a][l];
+  C[i+a][j+2] = C[i+a][j+2] + B[l][j+2]*A[i+a][l];
+  C[i+a][j+3] = C[i+a][j+3] + B[l][j+3]*A[i+a][l];
+  C[i+a][j+4] = C[i+a][j+4] + B[l][j+4]*A[i+a][l];
+  C[i+a][j+5] = C[i+a][j+5] + B[l][j+5]*A[i+a][l];
+  C[i+a][j+6] = C[i+a][j+6] + B[l][j+6]*A[i+a][l];
+  C[i+a][j+7] = C[i+a][j+7] + B[l][j+7]*A[i+a][l];
+}
+}
+
+//just unrolling
+for(i=0;i<m;i+=4) {
+  if(rem == 0){
+    C[i][j] = C[i][j] + B[l][j]*A[i][l];
+    C[i+1][j] = C[i+1][j] + B[l][j]*A[i+1][l];
+    C[i+2][j] = C[i+2][j] + B[l][j]*A[i+2][l];
+    C[i+3][j] = C[i+3][j] + B[l][j]*A[i+3][l];
+  }
+  else{
+    switch(rem){
+      case 3 :
+        C[i][j] = C[i][j] + B[l][j]*A[i][l];
+        C[i+1][j] = C[i+1][j] + B[l][j]*A[i+1][l];
+        C[i+2][j] = C[i+2][j] + B[l][j]*A[i+2][l];
+        break;
+      case 2 :
+        C[i][j] = C[i][j] + B[l][j]*A[i][l];
+        C[i+1][j] = C[i+1][j] + B[l][j]*A[i+1][l];
+        break;
+      case 1 :
+        C[i][j] = C[i][j] + B[l][j]*A[i][l];
+        break;
+      case 0 : ;
+    }
+  }
+}

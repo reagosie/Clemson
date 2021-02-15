@@ -1,0 +1,23 @@
+gcc matmul_naive.c -O0 -o naive.out
+
+gcc matmul_naive.c -O0 -DPRINT_MATRIX -o naiveprint.out
+
+
+
+
+
+gcc matmul_opt.c -O0 -o opt.out
+
+gcc matmul_opt.c -O0 -DPRINT_MATRIX -o optprint.out
+
+
+
+
+./naive.out 4 4 4
+
+./naiveprint.out 4 4 4
+
+
+./opt.out 4 4 4
+
+./optprint.out 4 4 4
