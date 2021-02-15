@@ -1,0 +1,25 @@
+Below are the image statistics of both versions of the micah.jpg image...
+
+Normal with histogramEQ:
+rMin: 0, rMax: 1, rMean: 0.221687, rStdDev: 0.312104
+gMin: 0.127761, gMax: 0.999999, gMean: 0.234287, gStdDev: 0.311991
+bMin: 0.00214267, bMax: 1, bMean: 0.234691, bStdDev: 0.309815
+
+With 1.8 Gamma and histogramEQ:
+rMin: 0.0567173, rMax: 1, rMean: 0.21994, rStdDev: 0.311221
+gMin: 0.114469, gMax: 1, gMean: 0.229823, gStdDev: 0.311021
+bMin: 0.148584, bMax: 1, bMean: 0.235417, bStdDev: 0.308359
+
+As you can see, there are clearly some differences in the values. However, the discrepancies are not nearly as large as I imagined.
+This translates to the visual images themselves even more. The differences in the 2 images that I produced with these commands are
+as close to undetectable as they can be without completely getting past me. Overall, I would say that the image with the gamma applied
+is ever-so-slightly brighter than the normal image with only histogramEQ applied. The differences are really only noticeable in
+certain spots of the image such as the shadow in the skin on Micah's neck and some of the texture of his hair. So I would say that
+the images do not differ much at all. For a quantitative comparison, I would look at the differences of all the values above, but
+especially the mean values:
+
+rMeanNormal - rMeanGamma = 0.221687 - 0.21994 = 0.001747
+gMeanNormal - gMeanGamma = 0.234287 - 0.229823 = 0.004464
+bMeanNormal - bMeanGamma = 0.234691 - 0.235417 = -0.000726
+
+These are fairly minute differences in the mean values of both versions of the image.
