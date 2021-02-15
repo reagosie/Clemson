@@ -1,0 +1,99 @@
+Prolog cut, not, fail
+
+goal1(_, Y) :- second(Y), first(Y).
+goal2(X,Y) :- first(X), second(Y), fail.
+goal3(X,Y) :- first(X), !, second(Y).
+goal4(X) :- second(X), not(second(X)).
+goal5(X,Y) :- first(X), first(Y), not(second(X)), not(second(Y)).
+
+first(2).
+first(4).
+first(5).
+first(8).
+
+second(4).
+second(6).
+second(8).
+second(10).
+
+Show all prolog solutions below:
+
+?- goal1(Who, What).
+What = 4
+What = 8
+Explanation: 4 and 8 are both in the first() and second() database
+
+?- goal2(Who,What).
+false
+Explanation: When there’s a ‘fail’ it will always be false
+
+?- goal3(Who,What).
+Who = 2, What = 4
+Who = 2, What = 6
+Who = 2, What = 8
+Who = 2, What = 10
+Explanation: The ! between the two stops the recursion causing it to stop after the first first(), which is first(2) 
+
+?- goal4(Who,What)
+false
+Explanation: If something is true and false, it is false
+
+?- goal5(Who,What)
+Who = 2, What = 2
+Who = 2, What = 5
+Who = 5, What = 2
+Who = 5, What = 5
+Explanation: Who and What must only be in a first() and not a second()
+Prolog Parsing and Generation
+
+
+pred1(A,B,[Z1,Z2,Z3]) :-
+    pred2(A,Z1),pred3(B,Z2),pred4(A,Z3),!.
+
+pred2(1,[“hi”]).
+pred2(N,[“hi”|UT]) :- NM1 is N-1, pred2(NM1,UT).
+
+pred3(1,[“mom”]).
+pred3(N,[“mom”|RT]) :- NM1 is N-1, pred3(NM1, RT).
+
+pred4(1,[“!”]).
+pred4(N,[“!”|DT]) :- NM1 is N-1, pred4(NM1, DT).
+
+
+Show the FIRST solution
+
+?- pred2(6,What).
+What = [“hi”, “hi”, “hi”, “hi”, “hi”, “hi”]
+Explanation: Recurses 6 times pred2 creating a list
+
+?- pred3(3, Who).
+Who = [“mom”, “mom”, “mom”]
+
+?- pred4(3, Who).
+Who = [“!”, “!”, “!”]
+
+? – pred1(1,1,Who).
+Who = [[“hi”], [“mom”], [“!”]]
+Explanation: Creates a list of lists using pred2, pred3, and pred4
+Prolog Lists
+
+/*Manual states:
+Length(?List, ?Int)
+True if Int represents the number of elements in List */
+
+pred1(A,R) :- length(A,L), pred2(A,R,L,0).
+pred2(_,[],L,L) :- !.
+pred2(A,[A|T],L,S) :- S1 is S+1, pred2(A,T,L,S1).
+
+Show prolog response to each:
+?- pred2(_,[],10,10).
+True
+
+?- pred1([], What)
+What = []
+
+?- pred1([4, 3, 2], What).
+What = [[4,3,2],[4,3,2],[4,3,2]]
+
+?- pred1([1,2,3,4], What).
+What = [[1,2,3,4], [1,2,3,4], [1,2,3,4], [1,2,3,4]]

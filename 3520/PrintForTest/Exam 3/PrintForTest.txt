@@ -1,0 +1,59 @@
+/*PrintForTest*/
+
+/* smpl-unify1.pro */
+
+goal1(X,Y) :- first(X), second(Y).
+
+goal2(X) :- first(X), second(X).
+
+first(1).
+first(2).
+first(3).
+second(2).
+second(4).
+second(6).
+/***************************/
+
+/* listProcess.pro */
+
+someOper(X,R) :- R is X*X.
+
+listProcess([],[]).
+listProcess([AH|AT],[RH|RT]) :- someOper(AH,RH),listProcess(AT,RT).
+/*******************************************************************/
+
+/* list generate example (list_generate.pro) */
+/* does not check if N>0 */
+
+theList(0,[]) :- !.
+
+theList(N,[N|T]) :- NM1 is N-1, theList(NM1,T).
+
+/*
+?- ['list_generate.pro'].
+true.
+
+?- theList(10,Where).
+Where = [10, 9, 8, 7, 6, 5, 4, 3, 2|...] .
+
+?- theList(10,Where),write(Where).
+[10,9,8,7,6,5,4,3,2,1]
+Where = [10, 9, 8, 7, 6, 5, 4, 3, 2|...] .
+*/
+/******************************************************************/
+
+/* rough solution to add 2 lists */
+/* prototype: addMe(+A,+B,-C)  */
+
+addMe([],[],[]).  /* note order ! */
+
+addMe([HA|TA],[HB|TB],[HC|TC]) :- HC is HA+HB, addMe(TA,TB,TC).
+/******************************************************************/
+
+/*diff_example.pro*/
+/* work describing a row of image 2 - image1  */
+
+diff([],[],[]).
+
+diff([H1|T1],[H2|T2],[D1|D2]) :- D1 is (H2-H1), diff(T1,T2,D2).
+/******************************************************************/

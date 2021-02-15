@@ -1,0 +1,88 @@
+val os1 : float list = [1.; -1.; 1.; -1.]
+val os2 : float list = [-1.; -1.; 1.; -1.]
+val os3 : float list = [-1.; -1.; 1.; 1.]
+val w : float list list =
+  [[0.; -1.; 1.; -1.]; [-1.; 0.; -1.; 1.]; [1.; -1.; 0.; -1.];
+   [-1.; 1.; -1.; 0.]]
+val w2 : float list list =
+  [[0.; 1.; -1.; -1.]; [1.; 0.; -3.; 1.]; [-1.; -3.; 0.; -1.];
+   [-1.; 1.; -1.; 0.]]
+val we : float list list = [[0.; -1.]; [-1.; 0.]]
+val oi : float list = [-1.; -1.]
+
+netUnit([-1.; -1.; 1.; -1.],[1.; 0.; -3.; 1.]);;
+- : float = -5.
+netUnit([-1.; -1.],[1.; 0.]);;
+- : float = -1.
+netUnit(os1,[1.;2.;3.;1.]);;
+- : float = 1.
+
+netAll(os1,w);;
+- : float list = [3.; -3.; 3.; -3.]
+netAll(os2,w);;
+- : float list = [3.; -1.; 1.; -1.]
+
+hop11Activation(-3., 1.);;
+- : float = -1.
+hop11Activation(3., 1.);;
+- : float = 1.
+hop11Activation(0., 1.);;
+- : float = 1.
+
+hop11ActAll([-10.;34.5;0.0;-1.0],os1);;
+- : float list = [-1.; 1.; 1.; -1.]
+hop11ActAll([-5.;27.;2.;-5.5],os2);;
+- : float list = [-1.; 1.; 1.; -1.]
+
+nextState(os1,w);;
+- : float list = [1.; -1.; 1.; -1.]
+nextState(os2,w);;
+- : float list = [1.; -1.; 1.; -1.]
+nextState(os1,w2);;
+- : float list = [-1.; -1.; 1.; -1.]
+nextState(nextState(os1,w2),w2);;
+- : float list = [-1.; -1.; 1.; -1.]
+
+updateN(oi,we,1);;
+- : float list = [1.; 1.]
+updateN(oi,we,2);;
+- : float list = [-1.; -1.]
+updateN(oi,we,3);;
+- : float list = [1.; 1.]
+updateN(oi,we,4);;
+- : float list = [-1.; -1.]
+
+findsEquilibrium(os1,w,3);;
+- : bool = true
+findsEquilibrium(oi,we,5);;
+- : bool = false
+
+energy(os1,w);;
+- : float = -6.
+energy(os2,w);;
+- : float = 0.
+energy(os3,w);;
+- : float = 2.
+
+
+hopTrainAstate(os1);;
+- : float list list =
+[[0.; -1.; 1.; -1.]; [-1.; 0.; -1.; 1.]; [1.; -1.; 0.; -1.];
+ [-1.; 1.; -1.; 0.]]
+ hopTrainAstate(os2);;
+- : float list list =
+[[0.; 1.; -1.; 1.]; [1.; 0.; -1.; 1.]; [-1.; -1.; 0.; -1.];
+ [1.; 1.; -1.; 0.]]
+ hopTrainAstate(os3);;
+- : float list list =
+[[0.; 1.; -1.; -1.]; [1.; 0.; -1.; -1.]; [-1.; -1.; 0.; 1.];
+ [-1.; -1.; 1.; 0.]]
+
+let w2 = hopTrain([os1;os2;os3]);;
+val w2 : float list list =
+  [[0.; 1.; -1.; -1.]; [1.; 0.; -3.; 1.]; [-1.; -3.; 0.; -1.];
+   [-1.; 1.; -1.; 0.]]
+hopTrain([os1]);;
+- : float list list =
+[[0.; -1.; 1.; -1.]; [-1.; 0.; -1.; 1.]; [1.; -1.; 0.; -1.];
+ [-1.; 1.; -1.; 0.]]

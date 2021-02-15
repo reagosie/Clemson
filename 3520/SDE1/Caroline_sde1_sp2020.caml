@@ -1,0 +1,81 @@
+(** Caroline Case
+ CPSC 3520
+ SDE1
+ 2/20/20*)
+
+(** Next state computation; returns next state vector
+    Prototype: nextState(currentState, weightMatrix)
+    Signature: val nextState : float list * float list list -> float list = <fun>*)
+let nextState = function (currentState, weightMatrix) ->
+  if (currentState == []) then []
+    else hop11ActAll(netAll(currentState, weightMatrix), currentState);;
+
+(** Returns network state after n time steps;i.e.,  update of N time steps
+Prototype: updateN(currentState, weightMatrix, n)
+Signature: val updateN : float list * float list list * int -> float list = <fun>*)
+let rec updateN = function (currentState, weightMatrix, n) ->
+  if n <= 0 then currentState
+    else updateN(nextState(currentState, weightMatrix), weightMatrix, n-1);;
+
+(** Function findsEquilibrium returns true if network reachesan equilibrium
+state within range steps, false otherwise
+Prototype: findsEquilibrium(initialState, weightMatrix, range)
+Signature: val findsEquilibrium : float list * float list list* int -> bool = <fun>*)
+let rec findsEquilibrium = function (initialState, weightMatrix, range) ->
+  if range == 0 then false
+    else
+      if updateN(initialState, weightMatrix, range) = updateN(initialState, weightMatrix, range - 1) then true
+        else findsEquilibrium(initialState, weightMatrix, range - 1);;
+
+
+let rec getListLength = function (list) ->
+  if list == [] then 0
+    else 1 + getListLength(List.tl(list));;
+
+
+(** implements Equation 6
+Prototype: energy(state,weightMatrix)
+Signature: val energy : float list * float list list -> float = <fun>*)
+let rec energy = function (state , weightMatrix) ->
+  if weightMatrix == [] then 0.0
+    else -.(0.5) *. List.nth state (getListLength(state) - getListLength(weightMatrix)) *. netUnit(state, List.hd(weightMatrix)) +. energy(state, List.tl(weightMatrix));;
+
+
+let rec listAstate = function (state, value, pos, i) ->
+  if state == [] then []
+    else if i == pos then 0. :: listAstate(List.tl(state), value, pos, i+1)
+      else value *. List.hd(state) :: listAstate(List.tl(state), value, pos, i+1);;
+
+let rec matrixAstate = function (state, oldstate, pos) ->
+  if state == [] then []
+    else listAstate(oldstate, List.hd(state), pos, 0) :: matrixAstate(List.tl(state), oldstate, pos + 1);;
+
+(** Returns weight matrix for only one stored state,used as a ’warmup’ for the next function
+Prototype: hopTrainAstate(astate)
+Signature: val hopTrainAstate : float list -> float list list = <fun>*)
+let hopTrainAstate = function (astate) ->
+  if astate == [] then []
+    else matrixAstate(astate, astate, 0);;
+
+let rec hopList = function (l1, l2) ->
+  if l1 == [] || l2 == [] then []
+    else List.hd(l1) +. List.hd(l2) :: hopList(List.tl(l1), List.tl(l2));; 
+
+
+let rec hopMatrix = function (m1, m2) ->
+  if m1 == [] || m2 == [] then m1
+    else hopList(List.hd(m1), List.hd(m2)) :: hopMatrix(List.tl(m1), List.tl(m2));;
+
+let rec weightedMatrix = function (astates) ->
+  if astates == [] then []
+    else if List.tl(astates) == [] then List.hd(astates)
+      else if List.tl(List.tl(astates)) == [] then weightedMatrix([hopMatrix(List.hd(astates), List.hd(List.tl(astates)))])
+        else weightedMatrix(hopMatrix(List.hd(astates), List.hd(List.tl(astates))) :: List.tl(List.tl(astates)));;
+
+(** This returns weight matrix, given a list of stored states(shown previously) using Eqns (4) and (5)
+Prototype: hopTrain(allStates)
+Signature: val hopTrain : float list list -> float list list = <fun>*)
+let rec hopTrain = function (allStates) ->
+  if allStates == [] then []
+    else if List.tl(allStates) == [] then hopTrainAstate(List.hd(allStates))
+      else weightedMatrix(hopTrainAstate(List.hd(allStates)) :: hopTrain(List.tl(allStates)) :: []);;

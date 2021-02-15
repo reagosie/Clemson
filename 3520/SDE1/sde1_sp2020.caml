@@ -1,0 +1,135 @@
+(** Reagan Leonard
+  * CPSC 3520
+  * SDE 1
+  * Feb. 20, 2020 *)
+
+(** The following functions are contained in the given functions file
+    so we can use them from here on:
+  * netUnit
+  * netAll
+  * hop11Activation
+  * hop11ActAll                                                       *)
+
+(*  Helper function: This function ultimately helps hopTrainAstate.
+    It essentially makes a "row" (that is, a list) of the matrix that hopTrainAstate is making. Col is a position placeholder.
+    If col = row (which will be the matrix diagonal), insert a 0.
+    It returns a float list.
+*)
+let rec createList = function (state, value, row, col) ->
+    if state == []
+        then []
+    else if col == row
+        then 0. :: createList(List.tl state, value, row, col + 1)
+    else
+        (value *. List.hd state) :: createList(List.tl state, value, row, col + 1);;
+
+(*  Helper function: This function ultimately helps hopTrain.
+    It adds the elements of a list together and calls itself recursively.
+    It returns a float list.
+*)
+let rec addList = function (first, second) ->
+    if first == [] && second == []
+        then []
+    else
+        List.hd first +. List.hd second :: addList(List.tl first, List.tl second);;
+
+(*  This function is the next state computation. It returns next state vector.
+    It returns a float list.
+*)
+let nextState = function (currentState, weightMatrix) ->
+    if currentState == []
+        then []
+    else
+        hop11ActAll(netAll(currentState,  weightMatrix), currentState);;
+
+(*  This function returns the network state after n time steps (i.e. update of N time steps).
+    It returns a float list.
+*)
+let rec updateN = function (currentState, weightMatrix, n) ->
+    if n == 0
+        then currentState
+    else
+        updateN(nextState(currentState, weightMatrix), weightMatrix, n - 1);;
+
+(*  Helper function: This function helps hopTrainAstate.
+    It uses createList to create multiple rows (lists) that form the matrix that hopTrainAstate will return.
+    It returns a float list list.
+*)
+let rec createMatrix = function (state, staticState, row) ->
+    if state == []
+        then []
+    else
+        createList(staticState, List.hd state, row, 0) :: createMatrix(List.tl state, staticState, row + 1);;
+
+(*  Helper function: This function ultimately helps hopTrain.
+    It uses addList to add multiple rows (lists) that make up the matrix that hopTrainAstate will return (passed through via addWeights() ).
+    It returns a float list list.
+*)
+let rec addMatrix = function (first, second) ->
+    if first == [] && second == []
+        then []
+    else
+        addList(List.hd first, List.hd second) :: addMatrix(List.tl first, List.tl second);;
+
+(*  Helper function: This function helps hopTrainAstate.
+    It uses addMatrix to add up all the rows (lists) that make up the matrix that hopTrainAstate will return.
+    It returns a float list list.
+*)
+let rec addWeights = function (weights) ->
+    if weights == []
+        then []
+    else if List.tl weights == []
+        then List.hd weights
+    else if List.tl(List.tl weights) == []
+        then addWeights([addMatrix(List.hd weights, List.hd(List.tl weights))])
+    else
+        addWeights(addMatrix(List.hd weights, List.hd(List.tl weights)) :: List.tl(List.tl weights));;
+
+(*  This function returns weight matrix for only one stored state, used as a ’warmup’ for the next function.
+    It returns a float list list.
+*)
+let hopTrainAstate = function (astate) ->
+    createMatrix(astate, astate, 0);;
+
+(*  This returns a weight matrix, given a list of stored states (shown previously) using Eqns (4) and (5).
+    It returns a float list list.
+*)
+let rec hopTrain = function (allStates) ->
+    if allStates = []
+        then []
+    else if (List.tl allStates) = []
+        then hopTrainAstate(List.hd allStates)
+    else
+        addWeights(hopTrainAstate(List.hd allStates)  :: hopTrain(List.tl allStates) :: []);;
+
+(*  This function returns true if the network reaches an equilibrium state within range steps and returns false otherwise.
+    It returns a boolean value.
+*)
+let findsEquilibrium = function (initialState, weightMatrix, range) ->
+    if range == 0
+        then false
+    else if (updateN(initialState, weightMatrix, range) = updateN(initialState, weightMatrix, range-1))
+        then true
+    else
+        false;;
+
+(*  Helper function: This function helps energy.
+    It is essentially just a simple recursive way to find the size of a list.
+    It returns a float.
+*)
+let rec getListSize = function(list) ->
+    if list == []
+        then 0
+    else
+        1 + getListSize(List.tl list);;
+
+(*  This function implements the Hopfield Energy equation.
+    It returns a float.
+*)
+let rec energy = function (state, weightMatrix) ->
+    if weightMatrix == []
+        then 0.
+    else
+        -(0.5)
+        *. (List.nth state (getListSize(state) - getListSize(weightMatrix)))
+        *. netUnit(state, List.hd weightMatrix) +. energy(state, List.tl weightMatrix);;
